@@ -10,4 +10,21 @@ initializeDatabse()
 // JSON parsing middleware implemented
 app.use(express.json())
 
-// Function to read all books from DB
+// Function to seed books in DB
+const seedBooks = async (bookToSave) => {
+  try {
+    const savedBook = await BooksData.save(bookToSave)
+    return savedBook
+  } catch(error) {
+    throw error
+  }
+}
+
+
+
+// Listiening to the port for HTTP requests
+const PORT = 3000
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+})

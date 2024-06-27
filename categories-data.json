@@ -1,0 +1,22 @@
+[
+  {
+    "category": "Fiction",
+    "coverImage": "https://theobjectivestandard.com/wp-content/uploads/2023/02/The-Terrifying-Prescience-of-George-Orwells-1984-scaled.jpg"
+  },
+  {
+    "category": "Non-Fiction",
+    "coverImage": "https://hips.hearstapps.com/hmg-prod/images/anne-frank---photo-by-adn-bildarchivullstein-bild-via-getty-images.jpg?crop=1xw:0.75xh;center,top&resize=1200:*"
+  },
+  {
+    "category": "Psycology",
+    "coverImage": "https://www.verywellmind.com/thmb/6h6o5bHdFAGEhV_GQjLoL6SCAPs=/3632x2362/filters:no_upscale():max_bytes(150000):strip_icc()/Sigmund-Freud-in-office-56a7922f5f9b58b7d0ebc7ad.jpg"
+  },
+  {
+    "category": "Business",
+    "coverImage": "https://static.toiimg.com/thumb/msid-104043080,width-1280,height-720,resizemode-4/104043080.jpg"
+  },
+  {
+    "category": "Self-Help",
+    "coverImage": "https://moewalls.com/wp-content/uploads/2024/01/miyamoto-musashi-meditating-in-the-rain-vagabond-thumb.jpg"
+  }
+]

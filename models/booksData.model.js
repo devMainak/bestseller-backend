@@ -14,7 +14,7 @@ const booksSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  genre: [{type: mongoose.Schema.Types.ObjectId, ref: 'Categories'}],
+  category: [{type: mongoose.Schema.Types.ObjectId, ref: 'Categories'}],
   language: {
     type: String,
     default: "English"
