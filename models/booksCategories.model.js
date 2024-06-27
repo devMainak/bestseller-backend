@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 // Defining category schema
-const categorySchema = new mongoose.Schema({
+const booksCategorySchema = new mongoose.Schema({
   category: {
     type: String,
     required: true
@@ -13,7 +13,7 @@ const categorySchema = new mongoose.Schema({
 })
 
 // Defining categories model
-const Categories = mongoose.model('Categories', categorySchema)
+const BooksCategories = mongoose.model('Categories', booksCategorySchema)
 
 // exporting modules
-module.exports = Categories
+module.exports = BooksCategories

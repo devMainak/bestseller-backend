@@ -1,7 +1,8 @@
 const express = require('express')
 const app = express()
 const initializeDatabse = require('./db/db.connection')
-const books = require('./models/books.model')
+const BooksData = require('./models/booksData.model')
+const BooksCategories = require('./models/booksCategories.model')
 
 // Initializing DB connection
 initializeDatabse()
