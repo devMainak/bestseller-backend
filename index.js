@@ -85,7 +85,7 @@ app.get("/books", async (req, res) => {
     const books = await readAllBooks()
     if (books.length > 0) {
       res.status(200)
-      .send(books)
+      .json({data: {books: books}})
     } else {
       res.status(404)
       .json({error: "No books found."})
@@ -113,7 +113,7 @@ app.get("/books/:bookId", async (req, res) => {
     const book = await readBooksById(req.params.bookId)
     if (book) {
       res.status(200)
-      .send(book)
+      .json({data: {book: book}})
     } else {
       res.status(404)
       .json({error: "No Book Found."})
@@ -122,6 +122,34 @@ app.get("/books/:bookId", async (req, res) => {
     console.error(error)
     res.status(500)
     .json({error: "Failed to load book."})
+  }
+})
+
+// Function to read all categories
+const readAllCategories = async () => {
+  try {
+    const categories = await BooksCategories.find()
+    return categories
+  } catch (err) {
+    throw err
+  }
+}
+
+// GET method on "/categories" to read all categories
+app.get("/categories", async (req, res) => {
+  try {
+    const categories = await readAllCategories()
+    if (categories.length > 0) {
+      res.status(200)
+      .json({data: {categories: categories}})
+    } else {
+      res.status(404)
+      .json({error: "No categories found."})
+    }
+  } catch (error) {
+    console.error(error)
+    res.status(500)
+    .json({error: "Failed to load categories."})
   }
 })
 
