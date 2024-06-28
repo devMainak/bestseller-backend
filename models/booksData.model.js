@@ -14,7 +14,10 @@ const booksSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  category: [{type: mongoose.Schema.Types.ObjectId, ref: 'Categories'}],
+  categoryName: {
+    type: String,
+    enum: ["Fiction", "Non-Fiction", "Psychology", "Self-Help", "Business"]
+  },
   language: {
     type: String,
     default: "English"
@@ -23,6 +26,7 @@ const booksSchema = new mongoose.Schema({
     type: String,
     default: "United States"
   },
+  price: Number,
   rating: Number,
   summary: String,
   coverImageUrl: String

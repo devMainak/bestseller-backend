@@ -1,30 +1,33 @@
-const express = require('express')
-const app = express()
-const initializeDatabse = require('./db/db.connection')
-const BooksData = require('./models/booksData.model')
-const BooksCategories = require('./models/booksCategories.model')
+const express = require("express");
+const app = express();
+const initializeDatabse = require("./db/db.connection");
+const BooksData = require("./models/booksData.model");
+const BooksCategories = require("./models/booksCategories.model");
 
 // Initializing DB connection
-initializeDatabse()
+initializeDatabse();
 
 // JSON parsing middleware implemented
-app.use(express.json())
+app.use(express.json());
 
-// Function to seed books in DB
-const seedBooks = async (bookToSave) => {
+//
+
+// Function to seed categories in DB
+const seedBooks = async () => {
   try {
-    const savedBook = await BooksData.save(bookToSave)
-    return savedBook
-  } catch(error) {
-    throw error
+    const bookToSave = new BooksData(book);
+    const savedBook = await bookToSave.save();
+    console.log(savedBook);
+  } catch (error) {
+    throw error;
   }
-}
+};
 
+seedBooks();
 
+// // Listiening to the port for HTTP requests
+// const PORT = 3000
 
-// Listiening to the port for HTTP requests
-const PORT = 3000
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
+// app.listen(PORT, () => {
+//   console.log(`Server running on port ${PORT}`)
+// })
