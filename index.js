@@ -153,6 +153,34 @@ app.get("/categories", async (req, res) => {
   }
 })
 
+// Function to read category by _Id:
+const readCategoryById = async (categoryId) => {
+  try {
+    const categoryById = await BooksCategories.findById(categoryId)
+    return categoryById
+  } catch (err) {
+    throw err
+  }
+}
+
+// GET method on "/categories/:categoryId" to read category data by Id
+app.get("/categories/:categoryId", async (req, res) => {
+  try {
+    const category = await readCategoryById(req.params.categoryId)
+    if (category){
+      res.status(200)
+      .json({data: {category: category}})
+    } else {
+      res.status(404)
+      .json({error: "No category found."})
+    }
+  } catch (error) {
+    console.error(error)
+    res.status(500)
+    .json({error: "Failed to load category."})
+  } 
+})
+
 // Listiening to the port for HTTP requests
 const PORT = 3000
 
