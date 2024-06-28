@@ -45,13 +45,29 @@ const seedBooks = async () => {
   try {
     const bookToSave = new BooksData(book);
     const savedBook = await bookToSave.save();
-    console.log(savedBook);
+    return savedBook
   } catch (error) {
     throw error;
   }
 };
 
-seedBooks();
+// POST method on "/books" to seed categories in DB
+app.post("/books", async (req, res) => {
+  try {
+    const savedBook = await seedBooks(req.body)
+    if (savedBook) {
+      res.status(201)
+      .json({message: "Book saved successfully.", savedBook: savedBook})
+    } else {
+      res.status(400)
+      .json({error: "Some error occured while saving book."})
+    }
+  } catch (err) {
+    console.error(err)
+     res.status(500)
+     .json({error: "Failed to save new book."})
+  }
+})
 
 // Listiening to the port for HTTP requests
 const PORT = 3000
