@@ -69,6 +69,34 @@ app.post("/books", async (req, res) => {
   }
 })
 
+// Function to read all books from DB
+const readAllBooks = async () => {
+  try {
+    const books = await BooksData.find()
+    return books
+  } catch(err) {
+    throw err
+  }
+}
+
+// GET method on "/books" to get all books
+app.get("/books", async (req, res) => {
+  try {
+    const books = await readAllBooks()
+    if (books.length > 0) {
+      res.status(200)
+      .send(books)
+    } else {
+      res.status(404)
+      .json({error: "No books found."})
+    }
+  } catch (error) {
+    console.error(err)
+       res.status(500)
+       .json({error: "Failed to load books."})
+    }
+})
+
 // Listiening to the port for HTTP requests
 const PORT = 3000
 
