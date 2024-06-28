@@ -97,6 +97,34 @@ app.get("/books", async (req, res) => {
     }
 })
 
+// Function to read books by :_Id
+const readBooksById = async (bookId) => {
+  try {
+    const bookById = await BooksData.findById(bookId)
+    return bookById
+  } catch(err) {
+    throw err
+  }
+}
+
+// GET method on "/books/:bookId" to get book data by Id
+app.get("/books/:bookId", async (req, res) => {
+  try {
+    const book = await readBooksById(req.params.bookId)
+    if (book) {
+      res.status(200)
+      .send(book)
+    } else {
+      res.status(404)
+      .json({error: "No Book Found."})
+    }
+  } catch (error) {
+    console.error(error)
+    res.status(500)
+    .json({error: "Failed to load book."})
+  }
+})
+
 // Listiening to the port for HTTP requests
 const PORT = 3000
 
