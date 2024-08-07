@@ -192,6 +192,35 @@ app.get("/categories/:categoryId", async (req, res) => {
   } 
 })
 
+// Function to read all books from wishlist db
+const readBookFromWishlist = async () => {
+  try {
+    const books = await WishlistBooks.find()
+    return books
+  } catch(error) {
+    throw error
+  }
+}
+
+// GET method on "/wishlist" route to read all books from wishlist
+app.get("/wishlist", async (req, res) => {
+  try {
+    const books = await readBookFromWishlist()
+    if (books.length > 0)
+    {
+      res.status(200)
+      .json(books)
+    } else {
+      res.status(404)
+      .json({error: "No book found."})
+    }
+  } catch (error) {
+    console.error(error)
+    res.status(500)
+    .json({error: "Failed to load books in wishlist."})
+  }
+})
+
 // Function to seed data to wishlist db
 const seedToWishlist = async (book) => {
   try {
