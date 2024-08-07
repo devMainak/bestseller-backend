@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
-// Defining Books mongoose schema
-const booksSchema = new mongoose.Schema({
+// Defining wishlist mongoose schema
+const wishlistSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true
@@ -36,8 +36,8 @@ const booksSchema = new mongoose.Schema({
   coverImageUrl: String
 })
 
-// Defining the mongoose model
-const BooksData = mongoose.model('BooksData', booksSchema)
+// Defining mongoose model for wishlist
+const WishlistBooks = mongoose.model("WishlistBooks", wishlistSchema)
 
-// Exporting books model
-module.exports = BooksData
+// Exporting wishlist model
+module.exports = WishlistBooks

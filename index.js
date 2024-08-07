@@ -4,6 +4,7 @@ const cors = require('cors')
 const initializeDatabse = require("./db/db.connection");
 const BooksData = require("./models/booksData.model");
 const BooksCategories = require("./models/booksCategories.model");
+const WishlistBooks = require("./models/wishlist.model")
 
 // cors config
 const corsOptions = {
@@ -51,7 +52,7 @@ app.post("/categories", async (req, res) => {
 })
 
 // Function to seed categories in DB
-const seedBooks = async () => {
+const seedBooks = async (book) => {
   try {
     const bookToSave = new BooksData(book);
     const savedBook = await bookToSave.save();
@@ -189,6 +190,64 @@ app.get("/categories/:categoryId", async (req, res) => {
     res.status(500)
     .json({error: "Failed to load category."})
   } 
+})
+
+// Function to seed data to wishlist db
+const seedToWishlist = async (book) => {
+  try {
+    const bookToSeed = new WishlistBooks(book)
+    const savedBook = bookToSeed.save()
+    return savedBook
+  } catch(err) {
+    throw err
+  }
+}
+
+// POST method on "/wishlist" to seed book to wishlist db
+app.post("/wishlist", async (req, res) => {
+  try {
+    const savedBook = await seedToWishlist(req.body)
+    if (savedBook)
+    {
+      res.status(201)
+      .json({message: "Successfully added to wishlist", savedBook: savedBook})
+    } else {
+      res.status(400)
+      .json({error: "Failed to add in wishlist."})
+    }
+  } catch(error) {
+    console.error(error)
+    res.status(500)
+    .json({error: "Failed to add in wishlist."})
+  }
+})
+
+// Function to delete book by id from wishlist db
+const deleteBookFromWishlist = async (bookId) => {
+  try {
+    const deletedBook = await WishlistBooks.findByIdAndDelete(bookId)
+    return deletedBook
+  } catch (err) {
+    throw err
+  }
+}
+
+// DELETE method on "/wishlist/:bookId"
+app.delete("/wishlist/:bookId", async (req, res) => {
+  try {
+    const deletedBook = await deleteBookFromWishlist(req.params.bookId)
+    if (deletedBook) {
+      res.status(200)
+      .json({message: "Successfully deleted book form wishlist", deletedBook: deletedBook})
+    } else {
+      res.status(400)
+      .json({error: "Failed to delete book from wishlist"})
+    }
+  } catch(error) {
+    console.error(error)
+    res.status(500)
+    .json({error: "Failed to delete book from wishlist"})
+  }
 })
 
 // Listiening to the port for HTTP requests
