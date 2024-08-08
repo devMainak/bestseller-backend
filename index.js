@@ -5,6 +5,7 @@ const initializeDatabse = require("./db/db.connection");
 const BooksData = require("./models/booksData.model");
 const BooksCategories = require("./models/booksCategories.model");
 const WishlistBooks = require("./models/wishlist.model")
+const CartBooks = require("./models/cart.model")
 
 // cors config
 const corsOptions = {
@@ -276,6 +277,93 @@ app.delete("/wishlist/:bookId", async (req, res) => {
     console.error(error)
     res.status(500)
     .json({error: "Failed to delete book from wishlist"})
+  }
+})
+
+// Function to read all books from cart db
+const readBooksFromCart = async () => {
+  try {
+    const books = await CartBooks.find()
+    return books
+  } catch(error) {
+    throw error
+  }
+}
+
+// GET method on "/cart" route to read all books from wishlist
+app.get("/cart", async (req, res) => {
+  try {
+    const books = await readBooksFromCart()
+    if (books.length > 0)
+    {
+      res.status(200)
+      .json(books)
+    } else {
+      res.status(404)
+      .json({error: "No book found."})
+    }
+  } catch (error) {
+    console.error(error)
+    res.status(500)
+    .json({error: "Failed to load books in wishlist."})
+  }
+})
+
+// Function to seed book to cart db
+const seedToCart = async (book) => {
+  try {
+    const bookToSeed = new CartBooks(book)
+    const savedBook = bookToSeed.save()
+    return savedBook
+  } catch(err) {
+    throw err
+  }
+}
+
+// POST method on "/cart" to seed book to cart db
+app.post("/cart", async (req, res) => {
+  try {
+    const savedBook = await seedToCart(req.body)
+    if (savedBook)
+    {
+      res.status(201)
+      .json({message: "Successfully added to cart.", savedBook: savedBook})
+    } else {
+      res.status(400)
+      .json({error: "Failed to add in cart."})
+    }
+  } catch(error) {
+    console.error(error)
+    res.status(500)
+    .json({error: "Failed to add in cart."})
+  }
+})
+
+// Function to delete book by id from cart db
+const deleteBookFromCart = async (bookId) => {
+  try {
+    const deletedBook = await CartBooks.findByIdAndDelete(bookId)
+    return deletedBook
+  } catch (err) {
+    throw err
+  }
+}
+
+// DELETE method on "/cart/:bookId"
+app.delete("/cart/:bookId", async (req, res) => {
+  try {
+    const deletedBook = await deleteBookFromCart(req.params.bookId)
+    if (deletedBook) {
+      res.status(200)
+      .json({message: "Successfully deleted book from cart.", deletedBook: deletedBook})
+    } else {
+      res.status(400)
+      .json({error: "Failed to delete book from cart."})
+    }
+  } catch(error) {
+    console.error(error)
+    res.status(500)
+    .json({error: "Failed to delete book from cart."})
   }
 })
 
