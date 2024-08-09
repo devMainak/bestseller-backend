@@ -43,7 +43,7 @@ app.post("/categories", async (req, res) => {
      .json({message: "Category saved successfully.", savedCategory: savedCategory})
    } else {
      res.status(400)
-     .json({error: "Some error occured while saving new category."})
+     .json({message: "Some error occured while saving new category."})
    }
  } catch (err) {
    console.error(err)
@@ -72,7 +72,7 @@ app.post("/books", async (req, res) => {
       .json({message: "Book saved successfully.", savedBook: savedBook})
     } else {
       res.status(400)
-      .json({error: "Some error occured while saving book."})
+      .json({message: "Some error occured while saving book."})
     }
   } catch (err) {
     console.error(err)
@@ -100,7 +100,7 @@ app.get("/books", async (req, res) => {
       .json({data: {books: books}})
     } else {
       res.status(404)
-      .json({error: "No books found."})
+      .json({message: "No books found."})
     }
   } catch (error) {
     console.error(err)
@@ -128,7 +128,7 @@ app.get("/books/:bookId", async (req, res) => {
       .json({data: {book: book}})
     } else {
       res.status(404)
-      .json({error: "No Book Found."})
+      .json({message: "No Book Found."})
     }
   } catch (error) {
     console.error(error)
@@ -156,7 +156,7 @@ app.get("/categories", async (req, res) => {
       .json({data: {categories: categories}})
     } else {
       res.status(404)
-      .json({error: "No categories found."})
+      .json({message: "No categories found."})
     }
   } catch (error) {
     console.error(error)
@@ -184,7 +184,7 @@ app.get("/categories/:categoryId", async (req, res) => {
       .json({data: {category: category}})
     } else {
       res.status(404)
-      .json({error: "No category found."})
+      .json({message: "No category found."})
     }
   } catch (error) {
     console.error(error)
@@ -213,7 +213,7 @@ app.get("/wishlist", async (req, res) => {
       .json(books)
     } else {
       res.status(404)
-      .json({error: "No book found."})
+      .json({message: "No book found."})
     }
   } catch (error) {
     console.error(error)
@@ -243,7 +243,7 @@ app.post("/wishlist", async (req, res) => {
       .json({message: "Successfully added to wishlist", savedBook: savedBook})
     } else {
       res.status(400)
-      .json({error: "Failed to add in wishlist."})
+      .json({message: "Failed to add in wishlist."})
     }
   } catch(error) {
     console.error(error)
@@ -271,7 +271,7 @@ app.delete("/wishlist/:bookId", async (req, res) => {
       .json({message: "Successfully deleted book form wishlist", deletedBook: deletedBook})
     } else {
       res.status(400)
-      .json({error: "Failed to delete book from wishlist"})
+      .json({message: "Failed to delete book from wishlist"})
     }
   } catch(error) {
     console.error(error)
@@ -300,7 +300,7 @@ app.get("/cart", async (req, res) => {
       .json(books)
     } else {
       res.status(404)
-      .json({error: "No book found."})
+      .json({message: "No book found."})
     }
   } catch (error) {
     console.error(error)
@@ -330,12 +330,44 @@ app.post("/cart", async (req, res) => {
       .json({message: "Successfully added to cart.", savedBook: savedBook})
     } else {
       res.status(400)
-      .json({error: "Failed to add in cart."})
+      .json({message: "Failed to add in cart."})
     }
   } catch(error) {
     console.error(error)
     res.status(500)
     .json({error: "Failed to add in cart."})
+  }
+})
+
+// Function to update book in cart db by Id
+const updateBookInCart = async (bookId, bookToUpdate) => {
+  try {
+    const updatedBook = await CartBooks.findByIdAndUpdate(bookId, bookToUpdate, {new: true})
+    
+    return updatedBook
+  } catch(error) {
+    throw error
+  }
+}
+
+// PUT method on "/cart/:bookId" to update book data in cart
+app.put("/cart/:bookId", async (req, res) => {
+  const bookId = req.params.bookId
+  const book = req.body
+  
+  try {
+    const updatedBook = await updateBookInCart(bookId, book)
+    if (updatedBook){
+      res.status(200)
+      .json({message: "Successfully updated book.", updatedBook: updatedBook})
+    } else {
+      res.status(404)
+      .json({message: "No book found!"})
+    }
+  } catch (error) {
+    console.error(error)
+    res.status(500)
+    .json({error: "Failed to update book."})
   }
 })
 
