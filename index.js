@@ -460,6 +460,36 @@ app.post("/user/address", async (req, res) => {
   }
 })
 
+// Function to update address in db
+const updateUserAddress = async (addressId, address) => {
+  try {
+    const updatedAddress = await UserAddress.findByIdAndUpdate(addressId, address)
+    return updatedAddress
+  } catch (err) {
+    throw err
+  }
+}
+
+// PUT method on "/user/address/:addressId" to update address
+app.put("/user/address/:addressId", async (req, res) => {
+  const editedAddress = req.body
+  const addressId = req.params.addressId
+  try {
+    const updatedAddress = updateUserAddress(addressId, editedAddress)
+    if (updatedAddress) {
+      res.status(201)
+      .json({message: "Updated address successfully.", updatedAddress: updatedAddress})
+    } else {
+      res.status(400)
+      .json({message: "Failed to update address."})
+    }
+  } catch (error) {
+    console.error(error)
+    res.staus(500)
+    .json({error: "Failed to update address."})
+  }
+})
+
 // Listiening to the port for HTTP requests
 const PORT = 3000
 
