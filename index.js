@@ -490,6 +490,35 @@ app.put("/user/address/:addressId", async (req, res) => {
   }
 })
 
+// Function delete address by Id from db
+const deleteUserAddress = async (addressId) => {
+  try {
+    const deletedAddress = await UserAddress.findByIdAndDelete(addressId)
+    return deletedAddress
+  } catch (err) {
+    throw err
+  }
+}
+
+// DELETE method on "/user/address/:addressId" to delete address by Id
+app.delete("/user/address/:addressId", async (req, res) => {
+  const addressId = req.params.addressId
+  try {
+    const deletedAddress = deleteUserAddress(addressId)
+    if (deletedAddress) {
+      res.status(201)
+      .json({message: "Deleted address successfully.", deletedAddress: deletedAddress})
+    } else {
+      res.status(400)
+      .json({message: "Failed to delete address."})
+    }
+  } catch (error) {
+    console.error(error)
+    res.staus(500)
+    .json({error: "Failed to delete address."})
+  }
+})
+
 // Listiening to the port for HTTP requests
 const PORT = 3000
 
