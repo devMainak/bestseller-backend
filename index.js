@@ -6,6 +6,7 @@ const BooksData = require("./models/booksData.model");
 const BooksCategories = require("./models/booksCategories.model");
 const WishlistBooks = require("./models/wishlist.model")
 const CartBooks = require("./models/cart.model")
+const UserAddress = require("./models/userAdress.model")
 
 // cors config
 const corsOptions = {
@@ -390,12 +391,72 @@ app.delete("/cart/:bookId", async (req, res) => {
       .json({message: "Successfully deleted book from cart.", deletedBook: deletedBook})
     } else {
       res.status(400)
-      .json({error: "Failed to delete book from cart."})
+      .json({message: "Failed to delete book from cart."})
     }
   } catch(error) {
     console.error(error)
     res.status(500)
     .json({error: "Failed to delete book from cart."})
+  }
+})
+
+// Function to read all the user addresses from db
+const readUserAddresses = async () => {
+  try {
+    const addresses = await UserAddress.find()
+    return addresses
+  } catch (err) {
+    throw err
+  }
+}
+
+// GET method on "/user/address" route to read addresses
+app.get("/user/address", async (req, res) => {
+  try {
+    const addresses = await readUserAddresses()
+    if (addresses.length > 0)
+    {
+      res.status(200)
+      .json(addresses)
+    } else {
+      res.status(404)
+      .json({message: "No address found."})
+    }
+  } catch (error) {
+    console.error(error)
+    res.status(500)
+    .json({error: "Failed to read address"})
+  }
+})
+
+// Function to add user address in db
+const addUserAddress = async (address) => {
+  try {
+    const newAddress = new UserAddress(address)
+    const savedAddress = await newAddress.save()
+    return savedAddress
+  } catch (err) {
+    throw err
+  }
+}
+
+// POST method on "/user/address" to add new address
+app.post("/user/address", async (req, res) => {
+  const newAddress = req.body
+  
+  try {
+    const savedAddress = addUserAddress(newAddress)
+    if (savedAddress) {
+      res.status(201)
+      .json({message: "Saved address successfully.", savedAddress: savedAddress})
+    } else {
+      res.status(400)
+      .json({message: "Failed to add new address."})
+    }
+  } catch (error) {
+    console.error(error)
+    res.staus(500)
+    .json({error: "Failed to add new address."})
   }
 })
 
