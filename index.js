@@ -445,7 +445,7 @@ app.post("/user/address", async (req, res) => {
   const newAddress = req.body
   
   try {
-    const savedAddress = addUserAddress(newAddress)
+    const savedAddress = await addUserAddress(newAddress)
     if (savedAddress) {
       res.status(201)
       .json({message: "Saved address successfully.", savedAddress: savedAddress})
@@ -455,7 +455,7 @@ app.post("/user/address", async (req, res) => {
     }
   } catch (error) {
     console.error(error)
-    res.staus(500)
+    res.status(500)
     .json({error: "Failed to add new address."})
   }
 })
@@ -463,7 +463,7 @@ app.post("/user/address", async (req, res) => {
 // Function to update address in db
 const updateUserAddress = async (addressId, address) => {
   try {
-    const updatedAddress = await UserAddress.findByIdAndUpdate(addressId, address)
+    const updatedAddress = await UserAddress.findByIdAndUpdate(addressId, address, {new : true})
     return updatedAddress
   } catch (err) {
     throw err
@@ -477,7 +477,7 @@ app.put("/user/address/:addressId", async (req, res) => {
   try {
     const updatedAddress = updateUserAddress(addressId, editedAddress)
     if (updatedAddress) {
-      res.status(201)
+      res.status(200)
       .json({message: "Updated address successfully.", updatedAddress: updatedAddress})
     } else {
       res.status(400)
@@ -485,7 +485,7 @@ app.put("/user/address/:addressId", async (req, res) => {
     }
   } catch (error) {
     console.error(error)
-    res.staus(500)
+    res.status(500)
     .json({error: "Failed to update address."})
   }
 })
@@ -504,9 +504,9 @@ const deleteUserAddress = async (addressId) => {
 app.delete("/user/address/:addressId", async (req, res) => {
   const addressId = req.params.addressId
   try {
-    const deletedAddress = deleteUserAddress(addressId)
+    const deletedAddress = await deleteUserAddress(addressId)
     if (deletedAddress) {
-      res.status(201)
+      res.status(200)
       .json({message: "Deleted address successfully.", deletedAddress: deletedAddress})
     } else {
       res.status(400)
@@ -514,7 +514,7 @@ app.delete("/user/address/:addressId", async (req, res) => {
     }
   } catch (error) {
     console.error(error)
-    res.staus(500)
+    res.status(500)
     .json({error: "Failed to delete address."})
   }
 })

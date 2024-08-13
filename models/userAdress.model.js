@@ -2,7 +2,6 @@ const mongoose = require('mongoose')
 
 // Defining address schema
 const userAddressSchema = new mongoose.Schema({
-  address: {
     houseNumber: String,
     street: {
       type: String,
@@ -24,7 +23,6 @@ const userAddressSchema = new mongoose.Schema({
       type: Number,
       required: true
     }
-  }
 })
 
 // Defining mongoose model for schema
