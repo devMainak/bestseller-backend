@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 // Accessing mongoDB string
-const mongoURI = process.env['MONGODB']
+const mongoURI = process.env.MONGODB
 
 // Function for connecting database
 const initializeDatabase = async () => {
