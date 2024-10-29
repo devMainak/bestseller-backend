@@ -26,6 +26,10 @@ const booksSchema = new mongoose.Schema({
     type: String,
     default: "United States"
   },
+  discount: {
+    type: Number,
+    default: 0
+  },
   price: Number,
   rating: Number,
   summary: String,
