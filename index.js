@@ -42,12 +42,10 @@ app.post("/categories", async (req, res) => {
   try {
     const savedCategory = await seedCategories(req.body);
     if (savedCategory) {
-      res
-        .status(201)
-        .json({
-          message: "Category saved successfully.",
-          savedCategory: savedCategory,
-        });
+      res.status(201).json({
+        message: "Category saved successfully.",
+        savedCategory: savedCategory,
+      });
     } else {
       res
         .status(400)
@@ -230,12 +228,10 @@ app.post("/wishlist", async (req, res) => {
   try {
     const savedBook = await seedToWishlist(req.body);
     if (savedBook) {
-      res
-        .status(201)
-        .json({
-          message: "Successfully added to wishlist",
-          savedBook: savedBook,
-        });
+      res.status(201).json({
+        message: "Successfully added to wishlist",
+        savedBook: savedBook,
+      });
     } else {
       res.status(400).json({ message: "Failed to add in wishlist." });
     }
@@ -260,12 +256,10 @@ app.delete("/wishlist/:bookId", async (req, res) => {
   try {
     const deletedBook = await deleteBookFromWishlist(req.params.bookId);
     if (deletedBook) {
-      res
-        .status(200)
-        .json({
-          message: "Successfully deleted book form wishlist",
-          deletedBook: deletedBook,
-        });
+      res.status(200).json({
+        message: "Successfully deleted book form wishlist",
+        deletedBook: deletedBook,
+      });
     } else {
       res.status(400).json({ message: "Failed to delete book from wishlist" });
     }
@@ -278,7 +272,7 @@ app.delete("/wishlist/:bookId", async (req, res) => {
 // Function to read all books from cart db
 const readBooksFromCart = async () => {
   try {
-    const books = await CartBooks.find();
+    const books = await CartBooks.find().populate("book");
     return books;
   } catch (error) {
     throw error;
@@ -304,7 +298,8 @@ app.get("/cart", async (req, res) => {
 const seedToCart = async (book) => {
   try {
     const bookToSeed = new CartBooks(book);
-    const savedBook = bookToSeed.save();
+    const savedBook = await bookToSeed.save();
+    await savedBook.populate("book");
     return savedBook;
   } catch (err) {
     throw err;
@@ -351,12 +346,10 @@ app.put("/cart/:bookId", async (req, res) => {
   try {
     const updatedBook = await updateBookInCart(bookId, book);
     if (updatedBook) {
-      res
-        .status(200)
-        .json({
-          message: "Successfully updated book.",
-          updatedBook: updatedBook,
-        });
+      res.status(200).json({
+        message: "Successfully updated book.",
+        updatedBook: updatedBook,
+      });
     } else {
       res.status(404).json({ message: "No book found!" });
     }
@@ -381,12 +374,10 @@ app.delete("/cart/:bookId", async (req, res) => {
   try {
     const deletedBook = await deleteBookFromCart(req.params.bookId);
     if (deletedBook) {
-      res
-        .status(200)
-        .json({
-          message: "Successfully deleted book from cart.",
-          deletedBook: deletedBook,
-        });
+      res.status(200).json({
+        message: "Successfully deleted book from cart.",
+        deletedBook: deletedBook,
+      });
     } else {
       res.status(400).json({ message: "Failed to delete book from cart." });
     }
@@ -439,12 +430,10 @@ app.post("/user/address", async (req, res) => {
   try {
     const savedAddress = await addUserAddress(newAddress);
     if (savedAddress) {
-      res
-        .status(201)
-        .json({
-          message: "Saved address successfully.",
-          savedAddress: savedAddress,
-        });
+      res.status(201).json({
+        message: "Saved address successfully.",
+        savedAddress: savedAddress,
+      });
     } else {
       res.status(400).json({ message: "Failed to add new address." });
     }
@@ -475,12 +464,10 @@ app.put("/user/address/:addressId", async (req, res) => {
   try {
     const updatedAddress = updateUserAddress(addressId, editedAddress);
     if (updatedAddress) {
-      res
-        .status(200)
-        .json({
-          message: "Updated address successfully.",
-          updatedAddress: updatedAddress,
-        });
+      res.status(200).json({
+        message: "Updated address successfully.",
+        updatedAddress: updatedAddress,
+      });
     } else {
       res.status(400).json({ message: "Failed to update address." });
     }
@@ -506,12 +493,10 @@ app.delete("/user/address/:addressId", async (req, res) => {
   try {
     const deletedAddress = await deleteUserAddress(addressId);
     if (deletedAddress) {
-      res
-        .status(200)
-        .json({
-          message: "Deleted address successfully.",
-          deletedAddress: deletedAddress,
-        });
+      res.status(200).json({
+        message: "Deleted address successfully.",
+        deletedAddress: deletedAddress,
+      });
     } else {
       res.status(400).json({ message: "Failed to delete address." });
     }

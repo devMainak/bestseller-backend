@@ -41,7 +41,7 @@ const booksSchema = new mongoose.Schema({
 })
 
 // Defining the mongoose model
-const BooksData = mongoose.model('BooksData', booksSchema)
+const BooksData = mongoose.model('BooksDatas', booksSchema)
 
 // Exporting books model
 module.exports = BooksData
