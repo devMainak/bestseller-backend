@@ -331,7 +331,7 @@ const updateBookInCart = async (bookId, bookToUpdate) => {
       bookToUpdate,
       { new: true }
     );
-
+    await updatedBook.populate("book");
     return updatedBook;
   } catch (error) {
     throw error;
