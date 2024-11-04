@@ -190,7 +190,7 @@ app.get("/categories/:categoryId", async (req, res) => {
 // Function to read all books from wishlist db
 const readBookFromWishlist = async () => {
   try {
-    const books = await WishlistBooks.find();
+    const books = await WishlistBooks.find().populate("book");
     return books;
   } catch (error) {
     throw error;
@@ -217,6 +217,7 @@ const seedToWishlist = async (book) => {
   try {
     const bookToSeed = new WishlistBooks(book);
     const savedBook = bookToSeed.save();
+    await savedBook.populate("book")
     return savedBook;
   } catch (err) {
     throw err;
