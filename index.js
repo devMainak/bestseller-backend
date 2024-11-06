@@ -216,8 +216,8 @@ app.get("/wishlist", async (req, res) => {
 const seedToWishlist = async (book) => {
   try {
     const bookToSeed = new WishlistBooks(book);
-    const savedBook = bookToSeed.save();
-    await savedBook.populate("book")
+    const savedBook = await bookToSeed.save();
+    await savedBook.populate("book");
     return savedBook;
   } catch (err) {
     throw err;
