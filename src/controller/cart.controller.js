@@ -16,7 +16,7 @@ exports.getCart = async (req, res) => {
     if (books.length > 0) {
       res.status(200).json(books);
     } else {
-      res.status(400).json({ message: "No book found." });
+      res.status(200).json({ message: "No book found." });
     }
   } catch (error) {
     console.error(error);
