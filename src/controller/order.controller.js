@@ -3,7 +3,7 @@ const Order = require("../models/order.model");
 // Function to get order
 const readOrders = async () => {
   try {
-    const orders = await Order.find();
+    const orders = await Order.find().populate("books");
     return orders;
   } catch (error) {
     throw error;
