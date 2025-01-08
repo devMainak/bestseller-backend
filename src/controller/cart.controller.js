@@ -16,7 +16,7 @@ exports.getCart = async (req, res) => {
     if (books.length > 0) {
       res.status(200).json(books);
     } else {
-      res.status(404).json({ message: "No book found." });
+      res.status(400).json({ message: "No book found." });
     }
   } catch (error) {
     console.error(error);
@@ -89,29 +89,54 @@ exports.updateCart = async (req, res) => {
 
 // Function to delete book by id from cart db
 const deleteBookFromCart = async (bookId) => {
-    try {
-      const deletedBook = await CartBooks.findByIdAndDelete(bookId);
-      return deletedBook;
-    } catch (err) {
-      throw err;
-    }
-  };
-  
+  try {
+    const deletedBook = await CartBooks.findByIdAndDelete(bookId);
+    return deletedBook;
+  } catch (err) {
+    throw err;
+  }
+};
 
 exports.removeFromCart = async (req, res) => {
-    try {
-      const deletedBook = await deleteBookFromCart(req.params.bookId);
-      if (deletedBook) {
-        res.status(200).json({
-          message: "Successfully deleted book from cart.",
-          deletedBook: deletedBook,
-        });
-      } else {
-        res.status(400).json({ message: "Failed to delete book from cart." });
-      }
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Failed to delete book from cart." });
+  try {
+    const deletedBook = await deleteBookFromCart(req.params.bookId);
+    if (deletedBook) {
+      res.status(200).json({
+        message: "Successfully deleted book from cart.",
+        deletedBook: deletedBook,
+      });
+    } else {
+      res.status(400).json({ message: "Failed to delete book from cart." });
     }
-  };
-  
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to delete book from cart." });
+  }
+};
+
+// Function to clear out entire cart
+const deleteAllBooksFromCart = async () => {
+  try {
+    const deletedBooks = await CartBooks.deleteMany({});
+    return deletedBooks;
+  } catch (error) {
+    throw error;
+  }
+};
+
+exports.clearCart = async (req, res) => {
+  try {
+    const deletedBooks = await deleteAllBooksFromCart();
+    if (deletedBooks.deletedCount > 0) {
+      res.status(200).json({
+        message: "Successfully clear cart",
+        deletedBooks,
+      });
+    } else {
+      res.status(400).json({ message: "Failed to clear cart" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to clear cart." });
+  }
+};
