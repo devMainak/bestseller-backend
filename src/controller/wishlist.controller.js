@@ -14,9 +14,9 @@ exports.getWishlist = async (req, res) => {
   try {
     const books = await readBookFromWishlist();
     if (books.length > 0) {
-      res.status(200).json(books);
+      res.status(200).json({message: "Book fetched successfully", wishlist: books });
     } else {
-      res.status(404).json({ message: "No book found." });
+      res.status(200).json({ message: "No book found.", wishlist: [] });
     }
   } catch (error) {
     console.error(error);
