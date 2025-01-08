@@ -59,9 +59,13 @@ exports.saveOrder = async (req, res) => {
 // Function to update existing order
 const editExistingOrder = async (orderId, order) => {
   try {
-    const updatedOrder = await Order.findByIdAndUpdate(orderId, order, {
-      new: true,
-    }).populate("books");
+    const updatedOrder = await Order.findByIdAndUpdate(
+      orderId,
+      { $set: order },
+      {
+        new: true,
+      }
+    ).populate("books");
     return updatedOrder;
   } catch (error) {
     throw error;
@@ -71,7 +75,6 @@ const editExistingOrder = async (orderId, order) => {
 exports.updateOrder = async (req, res) => {
   const orderId = req.params.orderId;
   const { order } = req.body;
-
   try {
     const updatedOrder = await editExistingOrder(orderId, order);
 
