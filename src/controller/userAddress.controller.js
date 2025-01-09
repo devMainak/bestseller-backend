@@ -22,7 +22,7 @@ exports.addUserAddress = async (req, res) => {
         savedAddress: savedAddress,
       });
     } else {
-      res.status(200).json({ message: "Failed to add new address." });
+      res.status(400).json({ message: "Failed to add new address." });
     }
   } catch (error) {
     console.error(error);
@@ -46,7 +46,7 @@ exports.getUserAddresses = async (req, res) => {
     if (addresses.length > 0) {
       res.status(200).json(addresses);
     } else {
-      res.status(404).json({ message: "No address found." });
+      res.status(200).json({ message: "No address found." });
     }
   } catch (error) {
     console.error(error);
