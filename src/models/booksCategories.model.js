@@ -12,8 +12,6 @@ const booksCategorySchema = new mongoose.Schema({
   }
 })
 
-// Defining categories model
 const BooksCategories = mongoose.model('Categories', booksCategorySchema)
 
-// exporting modules
 module.exports = BooksCategories

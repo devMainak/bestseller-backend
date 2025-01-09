@@ -25,8 +25,6 @@ const userAddressSchema = new mongoose.Schema({
     }
 })
 
-// Defining mongoose model for schema
 const UserAddress = mongoose.model("bestseller-users-addresses", userAddressSchema)
 
-// Exporting the module
 module.exports = UserAddress

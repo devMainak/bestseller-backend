@@ -9,8 +9,6 @@ const cartSchema = new mongoose.Schema({
   },
 });
 
-// Defining mongoose model for cart
 const CartBooks = mongoose.model("cart", cartSchema);
 
-// Exporting wishlist model
 module.exports = CartBooks;

@@ -1,13 +1,10 @@
 // server.js
-
-// Load enviromental variables from .env files
 require("dotenv").config();
 
 const http = require("http");
 const app = require("./app");
 const PORT = process.env.PORT || 3000;
 
-// Create HTTP server
 const server = http.createServer(app);
 
 server.listen(PORT, () => {

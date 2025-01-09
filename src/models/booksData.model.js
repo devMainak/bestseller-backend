@@ -40,8 +40,6 @@ const booksSchema = new mongoose.Schema({
   coverImageUrl: String,
 });
 
-// Defining the mongoose model
 const BooksData = mongoose.model("BooksDatas", booksSchema);
 
-// Exporting books model
 module.exports = BooksData;
