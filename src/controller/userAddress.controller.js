@@ -22,7 +22,7 @@ exports.addUserAddress = async (req, res) => {
         savedAddress: savedAddress,
       });
     } else {
-      res.status(400).json({ message: "Failed to add new address." });
+      res.status(200).json({ message: "Failed to add new address." });
     }
   } catch (error) {
     console.error(error);
