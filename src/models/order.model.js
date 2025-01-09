@@ -5,6 +5,7 @@ const orderSchema = new mongoose.Schema(
   {
     books: [{ type: mongoose.Schema.Types.ObjectId, ref: "BooksDatas" }],
     totalAmount: { type: Number, default: 0 },
+    totalBookCount: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

@@ -4,6 +4,7 @@ const Order = require("../models/order.model");
 const readOrders = async () => {
   try {
     const orders = await Order.find().populate("books");
+    console.log(orders);
     return orders;
   } catch (error) {
     throw error;
@@ -61,7 +62,13 @@ const editExistingOrder = async (orderId, order) => {
   try {
     const updatedOrder = await Order.findByIdAndUpdate(
       orderId,
-      { $set: order },
+      {
+        $set: {
+          books: order.books,
+          totalAmount: order.totalAmount,
+          totalBookCount: order.totalBookCount,
+        },
+      },
       {
         new: true,
       }
